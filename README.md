@@ -9,52 +9,67 @@
 <a href="#"><img src="https://img.shields.io/badge/Export-Excel-217346?style=for-the-badge&logo=microsoft-excel&logoColor=white" /></a>
 
 <br/>
-
-<a href="#"><img src="https://img.shields.io/badge/Status-Working%20✅-22c55e?style=for-the-badge" /></a>
-<a href="#"><img src="https://img.shields.io/badge/Platform-Windows%2010%2F11-0ea5e9?style=for-the-badge&logo=windows&logoColor=white" /></a>
-
-<br/>
 <br/>
 
-**Egy felhasználóbarát, asztali alkalmazás**, ami a **csodalatosmagyarorszag.hu** WordPress REST API-járól **összegyűjti az eseményeket**, **cache-eli**, **szűrhető táblázatban megjeleníti**, majd **Excelbe exportálja**.
+**Egy felhasználóbarát, asztali alkalmazás**, ami a WordPress REST API-ról eseményeket gyűjt, cache-el, szűrhető táblázatban megjelenít, majd Excelbe exportál.
 
 </div>
 
 ---
 
-## ✨ Demo / UX (miért “látszik”, hogy dolgozik?)
-- 🔄 **Spinner + progress** (pl. `32/125`) betöltés közben  
-- 📥 **Oldalankénti betöltés**: a táblázat **folyamatosan töltődik**, nem “áll” a program  
-- 🧠 **Cache**: következő indításkor gyorsabb, akár offline is  
-- 🧾 **Export**: **csak a szűrt** találatok mennek Excelbe  
+## ✨ Demo / UX
+
+- 🔄 Spinner + progress (pl. `32/125`) betöltés közben
+- 📥 Oldalankénti betöltés: a táblázat folyamatosan töltődik
+- 🧠 Cache: következő indításkor gyorsabb, akár offline is
+- 🧾 Export: csak a szűrt találatok mennek Excelbe
 
 ---
 
 ## ✅ Fő funkciók
-- 🌐 WordPress REST API lekérés **lapozással** (`X-WP-TotalPages`)
-- 🏷️ Kategóriák feloldása **ID → név**
-- ♻️ Lokális cache (JSON)
-- 🧵 Háttérszálas letöltés (UI nem fagy)
-- 🔎 Szűrés:
-  - 📅 dátumtartomány
-  - 🧩 kategória (multi-select)
-  - 🔤 keresés (cím / helyszín)
-- 📊 Excel export (openpyxl)
+
+- WordPress REST API lapozott lekérés (`X-WP-TotalPages`)
+- Kategóriák feloldása ID → név
+- Lokális cache
+- Háttérszálas letöltés (QThread)
+- Dátum és kategória szerinti szűrés
+- Excel export
 
 ---
 
 ## 🧰 Tech stack
-- **Python 3.12+**
-- **PySide6 (Qt)** – GUI + QThread
-- **requests** – HTTP
-- **pandas** – adatfeldolgozás
-- **openpyxl** – Excel írás
-- **Nuitka** – Windows exe build
+
+- Python 3.12+
+- PySide6 (Qt GUI)
+- requests
+- pandas
+- openpyxl
+- Nuitka (natív Windows exe)
 
 ---
 
-## 📦 Telepítés (fejlesztői futtatás)
+## ▶️ Futtatás fejlesztői módban
 
 ```bash
 pip install pyside6 requests pandas openpyxl
 python app.py
+```
+
+---
+
+## 🏗️ Windows EXE build (Nuitka)
+
+```powershell
+py -3.12 -m pip install -U pip nuitka pyside6 requests pandas openpyxl ordered-set zstandard
+py -3.12 -m nuitka --onefile --windows-disable-console --enable-plugin=pyside6 --include-qt-plugins=sensible,platforms --include-package=pandas --include-package-data=pandas --include-package=pandas._libs --include-package=openpyxl --include-package-data=openpyxl --output-filename=EsemenyLekero.exe app.py
+```
+
+---
+
+## 🗂️ Cache
+
+A program futás közben létrehoz egy `cache/` mappát, és ide menti a letöltött adatokat.
+
+## 👤 Szerző
+
+Dániel Dávid
